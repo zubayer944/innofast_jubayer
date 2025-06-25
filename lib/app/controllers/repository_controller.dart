@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../domain/repositories/repository_repository.dart';
 import '../domain/entities/repository.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class RepositoryController extends GetxController {
   final RepositoryRepository repository;
@@ -30,7 +31,7 @@ class RepositoryController extends GetxController {
     
     // Load more data if needed
     if (repos.isEmpty) {
-      fetchRepositories();
+      _checkConnectivityAndFetch();
     }
   }
 
@@ -51,13 +52,29 @@ class RepositoryController extends GetxController {
     if (!scrollController.hasClients) return false;
     final maxScroll = scrollController.position.maxScrollExtent;
     final currentScroll = scrollController.position.pixels;
-    return currentScroll >= maxScroll * 0.8;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  Future<void> _checkConnectivityAndFetch() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      error.value = 'No internet connection';
+      isLoading.value = false;
+      return;
+    }
+    await fetchRepositories();
   }
 
   Future<void> fetchRepositories() async {
     isLoading.value = true;
     error.value = '';
     try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        error.value = 'No internet connection';
+        return;
+      }
+
       final result = await repository.getUserRepositories(
         'zubayer944',
         page: currentPage.value,
@@ -97,13 +114,12 @@ class RepositoryController extends GetxController {
     await fetchRepositories();
   }
 
-  @override
-  Future<void> refresh() async {
+  void refresh() {
     currentPage.value = 1;
     hasMore.value = true;
     repos.clear();
     isLoading.value = true;
-    await fetchRepositories();
+    fetchRepositories();
   }
 
   void onSelectRepoClicked(int index) {

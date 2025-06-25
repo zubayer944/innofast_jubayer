@@ -12,11 +12,11 @@ class ProfileScreen extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D1117),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF0D1117),
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: const Color(0xFF0D1117),
+      //   elevation: 0,
+      // ),
       body: Obx(() {
         if (controller.isLoadingUser.value) {
           return AppWidgets.loadingIndicator();
@@ -39,6 +39,7 @@ class ProfileScreen extends GetView<ProfileController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 30),
               _buildUserInfo(user),
               const SizedBox(height: 16),
               _statsView(user),
@@ -144,6 +145,7 @@ class ProfileScreen extends GetView<ProfileController> {
           (repo) => _buildRepositoryItem(repo),
         ),
         if (controller.repos.length > 4)
+          SizedBox(height: 10,),
           _buildSeeAllButton(),
       ],
     );

@@ -212,7 +212,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 
 - GitHub: [zubayer944](https://github.com/zubayer944)
-- Email: zubayer944@gmail.com
+- Email: info.jubayer.me@gmail.com
 - LinkedIn: [LinkedIn Profile](https://www.linkedin.com/in/zubayer944)
+- Contact: 01717670944
 
 Feel free to reach out if you have any questions or need assistance with the project!
