@@ -69,6 +69,8 @@ lib/
 
 ### Installation
 
+Note: The latest code is in the `master` branch.
+
 1. Clone the repository:
 ```bash
 git clone [repository-url]
