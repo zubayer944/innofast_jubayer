@@ -67,6 +67,7 @@ class ProfileScreen extends GetView<ProfileController> {
             color: Colors.white,
           ),
         ),
+
         if (user.bio?.isNotEmpty ?? false)
           Padding(
             padding: const EdgeInsets.only(top: 4),
@@ -77,15 +78,15 @@ class ProfileScreen extends GetView<ProfileController> {
             ),
           ),
         if (user.location != null)
-          Align(
-            alignment: Alignment.center,
+          Center(
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.location_on_outlined, color: Colors.grey),
+                const SizedBox(width: 8),
                 Text(
                   user.location!,
                   style: const TextStyle(color: Colors.grey, fontSize: 14),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),
