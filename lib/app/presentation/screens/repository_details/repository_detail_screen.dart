@@ -46,7 +46,6 @@ class RepositoryDetailScreen extends GetView<RepositoryDetailController> {
                 style: const TextStyle(color: Colors.grey, fontSize: 16),
               ),
               const SizedBox(height: 24),
-
               // Info Card
               Container(
                 width: Get.width,
@@ -75,11 +74,11 @@ class RepositoryDetailScreen extends GetView<RepositoryDetailController> {
                       '${controller.repository.openIssues}',
                       'Open issues',
                     ),
-                    // _buildInfoTile(Icons.label, controller.repository.language ?? "", 'Language'), repo.visibility),
                     _buildInfoTile(Icons.code, controller.repository.language ?? "None", 'Language'),
                   ],
                 ),
               ),
+              _buildOpenInBrowserButton(),
             ],
           ),
         );
@@ -113,6 +112,27 @@ class RepositoryDetailScreen extends GetView<RepositoryDetailController> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildOpenInBrowserButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () => controller.openRepositoryInBrowser(),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF161B22),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: const Text('Open in Browser'),
+        ),
       ),
     );
   }

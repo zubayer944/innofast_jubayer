@@ -21,7 +21,17 @@ class RepositoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    repos = Get.arguments;
+    // Initialize with arguments if available
+    final initialRepos = Get.arguments as List<Repository>?;
+    if (initialRepos != null && initialRepos.isNotEmpty) {
+      repos.value = initialRepos;
+      currentPage.value = (repos.length / perPage.value).ceil();
+    }
+    
+    // Load more data if needed
+    if (repos.isEmpty) {
+      fetchRepositories();
+    }
   }
 
   @override
@@ -59,10 +69,15 @@ class RepositoryController extends GetxController {
           if (reposList.isEmpty) {
             hasMore.value = false;
           } else {
+            // Remove duplicates by checking if repository already exists
+            final newRepos = reposList.where((newRepo) => 
+              !repos.any((existingRepo) => existingRepo.id == newRepo.id)
+            ).toList();
+            
             if (repos.isEmpty) {
-              repos.value = reposList;
+              repos.value = newRepos;
             } else {
-              repos.addAll(reposList);
+              repos.addAll(newRepos);
             }
             currentPage.value++;
           }

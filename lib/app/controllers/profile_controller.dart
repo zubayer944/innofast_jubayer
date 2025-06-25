@@ -6,10 +6,10 @@ import '../domain/entities/repository.dart';
 
 class ProfileController extends GetxController {
   final ProfileRepository repository;
-  var user = Rx<Profile?>(null);
-  var isLoadingUser = false.obs;
+  Rx<Profile?> user = Rx<Profile?>(null);
+  RxBool isLoadingUser = false.obs;
   var errorUser = ''.obs;
-  var repos = <Repository>[].obs;
+  RxList<Repository> repos = <Repository>[].obs;
 
   ProfileController({required this.repository});
 
@@ -20,37 +20,29 @@ class ProfileController extends GetxController {
   }
 
   Future<void> fetchProfile() async {
-    print('Starting profile fetch');
     isLoadingUser.value = true;
     errorUser.value = '';
     try {
-      print('Fetching profile data...');
       final profileResult = await repository.getProfile();
       profileResult.fold(
         (failure) {
-          print('Profile fetch failed: ${failure.message}');
           errorUser.value = failure.message;
           isLoadingUser.value = false;
         },
         (profile) async {
-          print('Profile fetch successful');
           user.value = profile;
-          print('Fetching repositories...');
           // Only fetch repositories if profile fetch was successful
           try {
             final reposResult = await repository.getUserRepositories('zubayer944');
             reposResult.fold(
               (failure) {
-                print('Repositories fetch failed: ${failure.message}');
                 errorUser.value = failure.message;
               },
               (reposList) {
-                print('Repositories fetch successful, count: ${reposList.length}');
                 repos.value = reposList;
               },
             );
           } catch (e) {
-            print('Error fetching repositories: $e');
             errorUser.value = 'Failed to fetch repositories: $e';
           }
           isLoadingUser.value = false;

@@ -57,7 +57,13 @@ class RepositoryListScreen extends GetView<RepositoryController> {
               return Card(
                 color: Colors.grey[800],
                 child: ListTile(
-                  leading: const Icon(Icons.folder, color: Colors.blue),
+                  leading: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white30,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.code, color: Colors.white)),
                   title: Text(
                     repo.name ?? "",
                     style: const TextStyle(color: Colors.white),
@@ -65,14 +71,17 @@ class RepositoryListScreen extends GetView<RepositoryController> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 4),
+                      if(repo.description != null)
+                        const SizedBox(height: 4),
                       Text(
                         repo.description ?? "",
                         style: const TextStyle(color: Colors.white70),
                       ),
-                      const SizedBox(height: 4),
+                      if(repo.description != null)
+                        const SizedBox(height: 4),
+
                       Text(
-                        '${repo.stargazersCount} stars • ${repo.language} • ${repo.forks} forks',
+                        '${repo.stargazersCount} stars • ${repo.language ?? "none"} • ${repo.forks} forks',
                         style: const TextStyle(color: Colors.white70),
                       ),
                     ],
